@@ -40,7 +40,8 @@ ggplot(merged, aes(x = difference)) +
 ggplot(merged, aes(x = hillcrest / 60, y = maritzburg / 60)) +
   geom_point(alpha = 0.25) +
   # geom_density_2d() +
-  geom_smooth(method = "lm") +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_smooth(method = "lm", formula = y ~ x + 0, color = "red") +
   geom_abline(slope = 1, lty = "dashed") +
   labs(x = "Hillcrest [Hours]", y = "Maritzburg [Hours]") +
   theme_minimal()
