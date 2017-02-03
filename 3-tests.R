@@ -7,6 +7,10 @@ t.test(maritzburg$time, hillcrest$time)
 
 t.test(merged$maritzburg, merged$hillcrest, paired = TRUE)
 
+# DISTRIBUTION TEST ---------------------------------------------------------------------------------------------------
+
+# Apply tests on underlying distribution.
+
 # LINEAR REGRESSION ---------------------------------------------------------------------------------------------------
 
 # This is also using paired data.

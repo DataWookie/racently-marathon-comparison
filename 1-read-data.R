@@ -12,13 +12,16 @@ marathons <- rename(marathons, athlete = athlete_id, race = name) %>%
     athlete = factor(athlete)
   )
 
-# Exclude 2010 data because it had a different cutoff time.
-#
-comparable_marathons = subset(marathons, year != 2010)
-
-hillcrest = filter(comparable_marathons, race == "Hillcrest") %>% select(-race)
-maritzburg = filter(comparable_marathons, race == "Maritzburg") %>% select(-race)
+hillcrest = filter(marathons, race == "Hillcrest") %>% select(-race)
+maritzburg = filter(marathons, race == "Maritzburg") %>% select(-race)
 
 merged = merge(hillcrest, maritzburg, by = c("year", "athlete")) %>%
   rename(hillcrest = time.x, maritzburg = time.y) %>%
   mutate(difference = maritzburg - hillcrest)
+
+# # Exclude 2010 data because it had a different cutoff time.
+# #
+# comparable_marathons = subset(marathons, year != 2010)
+# 
+# hillcrest = filter(comparable_marathons, race == "Hillcrest") %>% select(-race)
+# maritzburg = filter(comparable_marathons, race == "Maritzburg") %>% select(-race)
