@@ -1,0 +1,74 @@
+---
+title: "Untitled"
+output:
+  revealjs::revealjs_presentation:
+    theme: sky
+    highlight: haddock
+    center: true
+    transition: fade
+    reveal_options:
+      slideNumber: true
+      previewLinks: true
+---
+
+## R Markdown
+
+This is an R Markdown presentation. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document.
+
+## Olly
+
+Flip, not sure exactly what to tell you, I’m a fan of both the Hillcrest and the Maritzburg Marathon and both have played a key part in my Comrades training. They are both double lappers which I like, knowing what to expect for the second loop. I have run a faster Maritzburg (3:16) versus a Hillcrest (around 3:28 I think?) but I really gave the Maritzburg Marathon a real crack back then – my running ambitions have somewhat lowered since then! The key difference between the two is the last 7 or so kilometres – the tougher finish up Old Main Road at the Hillcrest compared to a fast finish at the Maritzburg Marathon. So if I had to choose, I would say perhaps the Maritzburg Marathon would be more conducive to a faster marathon simply based on the positioning of the climbs and at what stage of the marathon they appear. Both events are brilliantly organised.
+ 
+If my training goes well, the annual plan is to qualify at the Hillcrest with a “C-Batch” sub-3:40 (running even splits) and then run a “comfortable”sub-4 hour at the Maritzburg Marathon two weeks later (also even splits).
+
+## Yvette
+
+Hillcrest PRo's
+
+easy to get to 
+No early start to drive to
+Double lapper (which you know I love)
+Nice support on the route
+
+Con’s
+
+Hilly
+The laps can be split into two distinct sections – downhill and then uphill
+Very little relief on the course for your legs
+I drink too much beer after this race 
+Hard course to maintain a pace.
+
+PMB Pros
+
+Nice route, undulating with some climbs but all doable and spread around the course
+Double lapper
+Fast finish home in case  you are chasing a time (except that stupid incline past the school)
+You can maintain a nice pace throughout the run
+
+Con’s
+
+Can be hot as hell
+Very early start if you don’t stay up there
+Takes the whole weekend if you are staying up there
+I always think the course is easy, but it is not.
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Code and Output
+
+```{r}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
