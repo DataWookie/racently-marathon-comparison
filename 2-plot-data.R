@@ -29,26 +29,9 @@ ggplot(marathons, aes(x = race, y = time / 60)) +
   theme_minimal() + theme(legend.position = "none")
 
 ggplot(merged, aes(x = difference)) +
-  # geom_histogram() +
-  geom_density(fill = "lightgrey", alpha = 0.5) +
-  geom_vline(xintercept = 0, lty = "dashed") +
-  labs(x = "Maritzburg - Hillcrest [Minutes]", y = "Density") +
-  scale_x_continuous(limits = c(-150, 150)) +
-  theme_minimal()
-
-ggplot(merged, aes(x = difference)) +
   # geom_histogram(bins = 50, fill = "grey", colour = "black") +
   geom_density(fill = "grey", alpha = 0.5) +
   labs(x = "Maritzburg - Hillcrest [Minutes]", y = "Density") +
   scale_x_continuous(limits = c(-75, 75), breaks = seq(-75, 75, 25)) +
   facet_wrap(~ year) +
-  theme_minimal()
-
-ggplot(merged, aes(x = hillcrest / 60, y = maritzburg / 60)) +
-  geom_point(alpha = 0.25) +
-  # geom_density_2d() +
-  geom_smooth(method = "lm", formula = y ~ x) +
-  geom_smooth(method = "lm", formula = y ~ x + 0, color = "red") +
-  geom_abline(slope = 1, lty = "dashed") +
-  labs(x = "Hillcrest [Hours]", y = "Maritzburg [Hours]") +
   theme_minimal()

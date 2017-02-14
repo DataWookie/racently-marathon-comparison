@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cat << EOF | mysql racently >marathon-data.tsv
-SELECT name, YEAR(date) AS year, athlete_id, time
+SELECT athlete_id, A.name, gender, YEAR(date) AS year, time
 FROM
         race A
 JOIN
@@ -16,6 +16,10 @@ JOIN
         license D
 ON
         D.id = C.license_id
+JOIN
+	      athlete E
+ON
+	      E.id = D.athlete_id
 WHERE
         B.magnitude = 42.2
         AND

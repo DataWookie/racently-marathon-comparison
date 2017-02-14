@@ -1,7 +1,7 @@
 library(readr)
 library(dplyr)
 
-marathons <- read_tsv("marathon-data.tsv", col_types = "cicc")
+marathons <- read_tsv("marathon-data.tsv", col_types = "cccic")
 
 marathons <- rename(marathons, athlete = athlete_id, race = name) %>%
   mutate(

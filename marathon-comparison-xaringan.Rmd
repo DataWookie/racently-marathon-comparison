@@ -36,179 +36,193 @@ class: inverse, center, middle
 
 ---
 
-# Hello World
+# Yvette
 
-Install the **xaringan** package from [Github](https://github.com/yihui/xaringan):
+.pull-left[
+*Hillcrest*
 
-```{r eval=FALSE, tidy=FALSE}
+Pros
+* easy to get to 
+* No early start to drive to
+* Double lapper (which you know I love)
+* Nice support on the route
+
+Cons
+* Hilly
+* The laps can be split into two distinct sections - downhill and then uphill
+* Very little relief on the course for your legs
+* I drink too much beer after this race 
+* Hard course to maintain a pace.
+]
+
+.pull-right[
+**PMB**
+
+Pros
+* Nice route, undulating with some climbs but all doable and spread around the course
+* Double lapper
+* Fast finish home in case  you are chasing a time (except that stupid incline past the school)
+* You can maintain a nice pace throughout the run
+
+Cons
+* Can be hot as hell
+* Very early start if you don't stay up there
+* Takes the whole weekend if you are staying up there
+* I always think the course is easy, but it is not.
+]
+
+.footnote[[*] Not really. See next page.]
+
+
+---
+
+# Olly
+
+Flip, not sure exactly what to tell you, I'm a fan of both the Hillcrest and the Maritzburg Marathon and both have played a key part in my Comrades training. They are both double lappers which I like, knowing what to expect for the second loop. I have run a faster Maritzburg (3:16) versus a Hillcrest (around 3:28 I think?) but I really gave the Maritzburg Marathon a real crack back then - my running ambitions have somewhat lowered since then! The key difference between the two is the last 7 or so kilometres - the tougher finish up Old Main Road at the Hillcrest compared to a fast finish at the Maritzburg Marathon. So if I had to choose, I would say perhaps the Maritzburg Marathon would be more conducive to a faster marathon simply based on the positioning of the climbs and at what stage of the marathon they appear. Both events are brilliantly organised.
+ 
+If my training goes well, the annual plan is to qualify at the Hillcrest with a "C-Batch" sub-3:40 (running even splits) and then run a "comfortable"sub-4 hour at the Maritzburg Marathon two weeks later (also even splits).
+
+---
+
+# Karl
+
+I enjoy both marathons, they are both relatively close to home and both manageable marathons for a novice.
+Personally Hillcrest is nicer because as a Pinetown resident there is less distance to travel for the marathon(unless I sleep in PMB) and slightly more sleeping time.
+I would say though in my experience that Hillcrest is tougher, the last 10 km hilly climb back to the finish is probably the main reason.
+That being said there is a lot that can be done with all the down in km's 21 to 31.
+If needed one can recover for the ups there after. If feeling strong one can make some very good time in this stretch too.
+PMB is an undulating run with a few considerable hills, but most of these well over before the end of the race.
+My faster time has been in PMB though, sub 4 mat to mat (4:01 gun to gun) as compared to 4:07 in Hillcrest.
+
+---
+
+1. Box plot of marathon time versus location (and possibly gender).
+2. Fit lm and do ANOVA.
+3. t-test across whole population.
+4. Paired plots.
+5. Fit lm.
+6. Paired t-test.
+
+---
+
+```{r echo = FALSE}
+library(readr)
+library(dplyr)
+
+marathons <- read_tsv("marathon-data.tsv", col_types = "cccic")
+
+marathons <- rename(marathons, athlete = athlete_id, race = name) %>%
+  mutate(
+    # time -> decimal minutes
+    time = as.integer(sub("000000$", "", time)) / 60,
+    #
+    race = factor(sub(" Marathon$", "", race)),
+    athlete = factor(athlete)
+  )
+
+hillcrest = filter(marathons, race == "Hillcrest") %>% select(-race)
+maritzburg = filter(marathons, race == "Maritzburg") %>% select(-race)
+
+merged = merge(hillcrest, maritzburg, by = c("year", "athlete")) %>%
+  rename(hillcrest = time.x, maritzburg = time.y) %>%
+  mutate(difference = maritzburg - hillcrest)
+
+# # Exclude 2010 data because it had a different cutoff time.
+# #
+# comparable_marathons = subset(marathons, year != 2010)
+# 
+# hillcrest = filter(comparable_marathons, race == "Hillcrest") %>% select(-race)
+# maritzburg = filter(comparable_marathons, race == "Maritzburg") %>% select(-race)
+```
+
+---
+
+# Time versus Race
+
+```{r echo = FALSE}
+library(ggplot2)
+
+colour_hillcrest = "blue"
+colour_maritzburg = "green"
+
+marathon_colours <- c(colour_hillcrest, colour_maritzburg)
+
+ggplot(marathons, aes(x = race, y = time / 60)) +
+  geom_boxplot(aes(fill = race)) +
+  scale_fill_manual(values = marathon_colours) +
+  labs(x = "", y = "Hours") +
+  theme_minimal() + theme(legend.position = "none")
+```
+
+```{r eval = FALSE}
 devtools::install_github("yihui/xaringan")
 ```
 
---
-
-You are recommended to use the [RStudio IDE](https://www.rstudio.com/products/rstudio/), but you do not have to.
-
-- Create a new R Markdown document from the menu `File -> New File -> R Markdown -> From Template -> Ninja Presentation`;<sup>1</sup>
-
---
-
-- Click the `Knit` button to compile it;
-
---
-
-- or use the [RStudio Addin](https://rstudio.github.io/rstudioaddins/)<sup>2</sup> "Infinite Moon Reader" to live preview the slides (every time you update and save the Rmd document, the slides will be automatically reloaded in RStudio Viewer.
-
-.footnote[
-[1] 中文用户请看[这份教程](http://slides.yihui.name/xaringan/zh-CN.html)
-
-[2] See [#2](https://github.com/yihui/xaringan/issues/2) if you do not see the template or addin in RStudio.
-]
-
 ---
-background-image: url(`r xaringan:::karl`)
-background-position: 50% 50%
-class: center, bottom, inverse
 
-# You only live once!
+# Time versus Race
+
+```{r}
+fit <- lm(time ~ race, data = marathons)
+summary(fit)
+```
 
 ---
 
-# Hello Ninja
-
-As a presentation ninja, you certainly should not be satisfied by the "Hello World" example. You need to understand more about two things:
-
-1. The [remark.js](https://remarkjs.com) library;
-
-1. The **xaringan** package;
-
-Basically **xaringan** injected the chakra of R Markdown (minus Pandoc) into **remark.js**. The slides are rendered by remark.js in the web browser, and the Markdown source needed by remark.js is generated from R Markdown (**knitr**).
+```{r}
+t.test(maritzburg$time, hillcrest$time)
+```
 
 ---
 
-# remark.js
-
-You can see an introduction of remark.js from [its homepage](https://remarkjs.com). You should read the [remark.js Wiki](https://github.com/gnab/remark/wiki) at least once to know how to
-
-- create a new slide (Markdown syntax<sup>*</sup> and slide properties);
-
-- format a slide (e.g. text alignment);
-
-- configure the slideshow;
-
-- and use the presentation (keyboard shortcuts).
-
-It is important to be familiar with remark.js before you can understand the options in **xaringan**.
-
-.footnote[[*] It is different with Pandoc's Markdown! It is limited but should be enough for presentation purporses. Come on... You do not need a slide for the Table of Contents! Well, the Markdown support in remark.js [may be improved](https://github.com/gnab/remark/issues/142) in the future.]
+```{r echo = FALSE, fig.height = 4, dev = 'svg'}
+ggplot(merged, aes(x = hillcrest / 60, y = maritzburg / 60)) +
+  geom_point(alpha = 0.25) +
+  geom_smooth(method = "lm", formula = y ~ x) +
+  geom_smooth(method = "lm", formula = y ~ x + 0, color = "red") +
+  geom_abline(slope = 1, lty = "dashed") +
+  labs(x = "Hillcrest [Hours]", y = "Maritzburg [Hours]") +
+  theme_minimal()
+```
 
 ---
-background-image: url(`r xaringan:::karl`)
-background-size: cover
-class: center, bottom, inverse
 
-# I was so happy to have discovered remark.js!
+```{r}
+fit.1 <- lm(maritzburg ~ hillcrest, data = merged)
+summary(fit.1)
+```
+
+---
+
+```{r}
+fit.0 <- lm(maritzburg ~ hillcrest + 0, data = merged)
+summary(fit.0)
+```
+
+This model is more parsimonious.
+
+---
+
+```{r}
+t.test(merged$maritzburg, merged$hillcrest, paired = TRUE)
+```
+
+---
+
+```{r echo = FALSE, fig.height = 4, dev = 'svg'}
+ggplot(merged, aes(x = difference)) +
+  # geom_histogram() +
+  geom_density(fill = "lightgrey", alpha = 0.5) +
+  geom_vline(xintercept = 0, lty = "dashed") +
+  labs(x = "Maritzburg - Hillcrest [Minutes]", y = "Density") +
+  scale_x_continuous(limits = c(-150, 150)) +
+  theme_minimal()
+```
 
 ---
 class: inverse, middle, center
 
 # Using xaringan
-
----
-
-# xaringan
-
-Provides an R Markdown output format `xaringan::moon_reader` as a wrapper for remark.js, and you can use it in the YAML metadata, e.g.
-
-```yaml
----
-title: "A Cool Presentation"
-output:
-  xaringan::moon_reader
-    yolo: true
-    nature:
-      autoplay: 30000
----
-```
-
-See the help page `?xaringan::moon_reader` for all possible options that you can use.
-
----
-
-# remark.js vs xaringan
-
-Some differences between using remark.js (left) and using **xaringan** (right):
-
-.pull-left[
-1. Start with a boilerplate HTML file;
-
-1. Plain Markdown;
-
-1. Write JavaScript to autoplay slides;
-
-1. Manually configure MathJax;
-
-1. Highlight code with `*`;
-
-1. Edit Markdown source and refresh browser to see updated slides;
-]
-
-.pull-right[
-1. Start with an R Markdown document;
-
-1. R Markdown (can embed R/other code chunks);
-
-1. Provide an option `autoplay`;
-
-1. MathJax just works;<sup>*</sup>
-
-1. Highlight code with `{{}}`;
-
-1. The RStudio addin "Infinite Moon Reader" automatically refreshes slides on changes;
-]
-
-.footnote[[*] Not really. See next page.]
-
----
-
-# Math Expressions
-
-You can write LaTeX math expressions inside a pair of dollar signs, e.g. &#36;\alpha+\beta$ renders $\alpha+\beta$. You can use the display style with double dollar signs:
-
-```
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-```
-
-$$\bar{X}=\frac{1}{n}\sum_{i=1}^nX_i$$
-
-Limitations:
-
-1. The source code of a LaTeX math expression must be in one line;
-
-1. There should not be spaces after the opening `$` or before the closing `$`.
-
-If you are using the RStudio IDE, math expressions should be rendered even if you are offline.
-
----
-
-# R Code
-
-```{r comment='#'}
-# a boring regression
-fit = lm(dist ~ 1 + speed, data = cars)
-coef(summary(fit))
-dojutsu = c('地爆天星', '天照', '加具土命', '神威', '須佐能乎', '無限月読')
-grep('天', dojutsu, value = TRUE)
-```
-
----
-
-# R Plots
-
-```{r cars, fig.height=4, dev='svg'}
-par(mar = c(4, 4, 1, .1))
-plot(cars, pch = 19, col = 'darkgray', las = 1)
-abline(fit, lwd = 2)
-```
 
 ---
 
@@ -224,16 +238,14 @@ See the next page for two HTML widgets.
 
 ```{r out.width='100%', fig.height=6, eval=require('leaflet')}
 library(leaflet)
-leaflet() %>% addTiles() %>% setView(-93.65, 42.0285, zoom = 17)
+leaflet() %>% addTiles() %>% setView(30.765, -29.805, zoom = 13)
 ```
 
 ---
 
-```{r eval=require('DT'), tidy=FALSE}
-DT::datatable(
-  head(iris, 10),
-  fillContainer = FALSE, options = list(pageLength = 5)
-)
+```{r out.width='100%', fig.height=6, eval=require('leaflet')}
+library(leaflet)
+leaflet() %>% addTiles() %>% setView(30.385, -29.615, zoom = 12)
 ```
 
 ---
